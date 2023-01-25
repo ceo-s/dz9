@@ -2,22 +2,29 @@ import random
 
 players = {}
 
-def create_desk():
-    nums = set()
-    while len(nums) != 15:
-        nums.add(random.randint(1, 90))
-    nums = sorted(list(nums))
-    for i in range(len(nums), 0, -5):
-        for j in range(3):
-            nums.insert(random.randint(i-5, i), "  ")
-    nums.insert(8, "\n")
-    nums.insert(17, "\n")
-    return nums
-
 class Player():
+    @classmethod
+    def create_desk(cls) -> list:
+        nums = set()
+        while len(nums) != 15:
+            nums.add(random.randint(1, 90))
+        nums = sorted(list(nums))
+        for i in range(len(nums), 0, -5):
+            for j in range(3):
+                nums.insert(random.randint(i-5, i), "  ")
+        nums.insert(8, "\n")
+        nums.insert(17, "\n")
+        return nums
+
     def __init__(self, name: str, desk):
         self.name = name
         self.desk = desk
+    
+    def __str__(self) -> str:
+        return f"Никнейм игрока - {self.name}."
+            
+    def __eq__(self, __o: object) -> bool:
+        return len(list(filter(lambda x: type(x) == int, self.desk))) == len(list(filter(lambda x: type(x) == int, __o.desk)))
 
     def print_desk(self):
         desk = f"Доска игрока '{self.name}':\n{'-'*25}\n"
@@ -28,7 +35,9 @@ class Player():
         print(desk)
 
 def create_player(name):
-    players[name] = Player(name, create_desk())
+    players[name] = Player(name, Player.create_desk())
+
+
 
 polling = True
 if __name__ == "__main__":
