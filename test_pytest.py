@@ -1,4 +1,4 @@
-from main import Player, create_player, create_desk, players
+from main import Player, create_player, players
 
 class TestPytestom:
       
@@ -9,16 +9,27 @@ class TestPytestom:
         assert list(players.keys()) == ["Egor", "Roman"]
 
     def test_name(self):
-        egor = Player("Egor", create_desk())
+        egor = Player("Egor", Player.create_desk())
         assert egor.name == "Egor"
 
     def test_create_desk(self):
 
-        egor = Player("Egor", create_desk())
-        vasya = Player("Vasya", create_desk())
+        egor = Player("Egor", Player.create_desk())
+        vasya = Player("Vasya", Player.create_desk())
         assert len(vasya.desk) == len(egor.desk)
 
     def test_desk(self):
-        egor = Player("Egor", create_desk())
+        egor = Player("Egor", Player.create_desk())
         assert len(egor.desk) == 26
         assert egor.desk[8] == egor.desk[17] == "\n"
+
+    def test_str_dunder(self):
+        andruha = Player("Andruha", Player.create_desk())
+        assert str(andruha) == f"Никнейм игрока - {andruha.name}."
+
+    def test_comparison(self):
+        andruha = Player("Andruha", Player.create_desk())
+        roma = Player("Roma", Player.create_desk())
+        assert roma == andruha
+        roma.desk.append(12)
+        assert roma != andruha
